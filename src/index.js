@@ -13,7 +13,7 @@ const getRandomValue = (values) => {
 const getBreeds = () => {
   return axios.get('https://dog.ceo/api/breeds/list/all')
     .then((response) => {
-      const breeds = response.data.message;
+      const breeds = Object.keys(response.data.message);
       console.log('we have some data');
       return breeds;
     });
@@ -39,7 +39,14 @@ const getRandomImageForBreed = (breed) => {
 // returns a Promise to a url (string)
 
 const getRandomDogImage = () => {
-  // implement me!
+  return getBreeds().then((breeds) => {
+    const randomBreed = getRandomValue(breeds);
+    return getRandomImageForBreed(randomBreed);
+  })
+    .then((imageUrl) => {
+      console.log(`Here is my URL: ${imageUrl}`)
+      return imageUrl;
+    });
 };
 
 // This is the call we would like to make work
